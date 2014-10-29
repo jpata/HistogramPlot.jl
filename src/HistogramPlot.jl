@@ -1,6 +1,6 @@
 module HistogramPlot
 
-using StatsBase, PyPlot
+using StatsBase, PyPlot, PyCall
 
 nbins(h::Histogram) = size(h.edges[1])
 edges(h::Histogram) = h.edges
@@ -8,13 +8,15 @@ contents(h::Histogram) = h.weights
 errors(h::Histogram) = sqrt(h.weights)
 integral(h::Histogram) = sum(h.weights)
 
+export nbins, edges, contents, errors, integral
+
 #draws a familiar 1-D histogram with errors
 #ax - PyPlot axes
 #hh - Histogram
 #kwords:
 #do_error - default true, false to skip drawing errorbars
 #scaling - multiply bar heights and errors ny this number
-function barplot{T<:Real}(ax::PyObject, hh::Histogram{T, 1, (Array{Float64,1},)}, color::ASCIIString;kwargs...)
+function barplot{T<:Real}(ax::PyObject, hh::Histogram{T, 1, (Array{T,1},)}, color::ASCIIString;kwargs...)
     kwargsd = [k=>v for (k, v) in kwargs]
     do_error = pop!(kwargsd, :do_error, true)
     scaling = pop!(kwargsd, :scaling, 1.0)
@@ -34,4 +36,5 @@ function barplot{T<:Real}(ax::PyObject, hh::Histogram{T, 1, (Array{Float64,1},)}
     return p
 end
 
+export barplot
 end # module

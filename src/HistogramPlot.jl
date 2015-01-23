@@ -1,6 +1,6 @@
 module HistogramPlot
 
-using StatsBase, PyPlot, PyCall
+using StatsBase, PyPlot, PyCall, HEP
 
 #draws a familiar 1-D histogram with errors
 #ax - PyPlot axes
